@@ -1,11 +1,21 @@
-from transformers import pipeline
 import os
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 api_key = os.getenv("HUGGINGFACE_API_KEY")
 
-generator = pipeline("text-generation", model="HuggingFaceH4/zephyr-7b-beta", token=api_key)
+headers = {
+    "Authorization": f"Bearer {api_key}"
+}
 
-response = generator("Write an email to my boss for resignation?", max_length=256, do_sample=True, temperature=0.7)
-print(response[0]["generated_text"])
+def query(prompt):
+    response = requests.post(
+        "https://api-inference.huggingface.co/models/tiiuae/falcon-rw-1b",  # lighter model
+        headers=headers,
+        json={"inputs": prompt}
+    )
+    return response.json()[0]["generated_text"]
+
+# Example usage
+print(query("Write an email to resign from my job."))
