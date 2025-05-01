@@ -1,15 +1,11 @@
-import openai
+from transformers import pipeline
 import os
+from dotenv import load_dotenv
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
+api_key = os.getenv("HUGGINGFACE_API_KEY")
 
-response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "user", "content": "Write an email to my boss for resignation?"}
-    ],
-    temperature=0.7,
-    max_tokens=256
-)
+generator = pipeline("text-generation", model="HuggingFaceH4/zephyr-7b-beta", token=api_key)
 
-print(response.choices[0].message['content'])
+response = generator("Write an email to my boss for resignation?", max_length=256, do_sample=True, temperature=0.7)
+print(response[0]["generated_text"])
