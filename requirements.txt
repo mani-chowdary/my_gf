@@ -2,3 +2,4 @@ transformers
 huggingface-hub
 python-dotenv
 speechrecognition
+torch  # <-- Add this line
