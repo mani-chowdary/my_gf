@@ -1,11 +1,10 @@
-import os
-from config import apikey
 import openai
+from config import apikey
 
 openai.api_key = apikey
 
 response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+    model="gpt-3.5-turbo",
     messages=[
         {"role": "user", "content": "Write an email to my boss for resignation?"}
     ],
