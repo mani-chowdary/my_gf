@@ -1,7 +1,7 @@
 import requests
 import os
 
-API_URL = "API_URL = API_URL = "https://api-inference.huggingface.co/models/username/my_gf2"  # Replace with your model
+API_URL = "https://api-inference.huggingface.co/models/username/my_gf2"  # Replace with actual model name
 headers = {"Authorization": f"Bearer {os.getenv('HF_API_KEY')}"}
 
 def query(prompt):
