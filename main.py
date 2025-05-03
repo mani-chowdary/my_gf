@@ -1,25 +1,23 @@
 import speech_recognition as sr
 import os
 import webbrowser
-from config import generator
+from config import query
 import datetime
 import random
 
 chatStr = ""
 
-def chat(query):
+def chat(user_query):
     global chatStr
-    chatStr += f"User: {query}\nAI: "
-    response = generator(chatStr, max_length=256, do_sample=True, temperature=0.7)
-    output = response[0]["generated_text"]
+    chatStr += f"User: {user_query}\nAI: "
+    output = query(chatStr)
     say(output)
     chatStr += output + "\n"
     return output
 
 def ai(prompt):
     text = f"Hugging Face Response for Prompt: {prompt} \n *************************\n\n"
-    response = generator(prompt, max_length=256, do_sample=True, temperature=0.7)
-    output = response[0]["generated_text"]
+    output = query(prompt)
     text += output
 
     if not os.path.exists("HuggingFace"):
@@ -28,7 +26,7 @@ def ai(prompt):
         f.write(text)
 
 def say(text):
-    os.system(f'say "{text}"')  # Optional: Change for cross-platform compatibility
+    os.system(f'say "{text}"')  # For macOS. For Windows, use pyttsx3 or winspeech.
 
 def takeCommand():
     r = sr.Recognizer()
